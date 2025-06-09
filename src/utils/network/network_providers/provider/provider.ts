@@ -1,4 +1,4 @@
-import { INetworkInterface } from "../types/network_interface.ts"
+import { INetworkInterface } from '../types/network_interface.ts'
 
 class NetworkProvider implements INetworkInterface<Response> {
   private networkInterface!: INetworkInterface<Response>
@@ -16,7 +16,7 @@ class NetworkProvider implements INetworkInterface<Response> {
 
   public static get instance(): NetworkProvider {
     if (!this._instance) {
-      throw new Error("NetworkProvider instance is not initialized.")
+      throw new Error('NetworkProvider instance is not initialized.')
     }
     return this._instance
   }

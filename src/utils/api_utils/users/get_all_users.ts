@@ -13,16 +13,15 @@ const getAllUsers = async (): Promise<IUser[]> => {
       if (!response.ok) {
         reject(
           new Error(
-            "Failed to fetch logged-in user data: " + response.statusText
+            'Failed to fetch logged-in user data: ' + response.statusText
           )
         )
       }
 
       const userData: IUser[] = await response.json()
-      console.log("All users fetched:", userData[0].firstName)
       resolve(userData)
     } catch (error) {
-      reject(new Error("Error fetching logged-in user data: " + error.message))
+      reject(new Error('Error fetching logged-in user data: ' + error.message))
     }
   })
 }

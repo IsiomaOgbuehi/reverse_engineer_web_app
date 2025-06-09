@@ -1,6 +1,6 @@
 import ApiConfig from '../../network/api_config.ts'
 import NetworkProvider from '../../network/network_providers/provider/provider.ts'
-import type { ITokenPayload } from "../token/types.ts"
+import type { ITokenPayload } from '../token/types.ts'
 import getCheckCode from './helper_functions.ts/check_code.ts'
 import type { IUser } from './types.ts'
 
@@ -15,19 +15,19 @@ const getLoggedInUser = async (tokens: ITokenPayload): Promise<IUser> => {
       Object.keys(tokens)
         .sort()
         .map((key) => urlParams.append(key, tokens[key]))
-        .join("&")
+        .join('&')
 
-      urlParams.append("checkcode", checkcode)
+      urlParams.append('checkcode', checkcode)
 
       const response = await NetworkProvider.instance.post(
         ApiConfig.postLoginUser,
-        urlParams,
+        urlParams
       )
 
       if (!response.ok) {
         reject(
           new Error(
-            "Failed to fetch logged-in user data: " + response.statusText
+            'Failed to fetch logged-in user data: ' + response.statusText
           )
         )
       }
@@ -35,7 +35,7 @@ const getLoggedInUser = async (tokens: ITokenPayload): Promise<IUser> => {
       const userData = await response.json()
       resolve(userData)
     } catch (error) {
-      reject(new Error("Error fetching logged-in user data: " + error.message))
+      reject(new Error('Error fetching logged-in user data: ' + error.message))
     }
   })
 }

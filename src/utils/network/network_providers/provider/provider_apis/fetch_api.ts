@@ -4,17 +4,21 @@ import { INetworkInterface } from '../../types/network_interface.ts'
 class FetchApi implements INetworkInterface<Response> {
   constructor() {}
 
-  async post(url: string, body: BodyInit | null, parsedHeaders?: HeadersInit): Promise<Response> {
+  async post(
+    url: string,
+    body: BodyInit | null,
+    parsedHeaders?: HeadersInit
+  ): Promise<Response> {
     try {
       return fetch(url, {
-        method: "POST",
+        method: 'POST',
         headers:
           parsedHeaders !== undefined
             ? parsedHeaders
             : {
-                accept: "*/*",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Content-Type": "application/x-www-form-urlencoded",
+                accept: '*/*',
+                'Accept-Language': 'en-US,en;q=0.9',
+                'Content-Type': 'application/x-www-form-urlencoded',
                 cookie: ApiConfig.getCookies(),
               },
         body,
@@ -22,7 +26,7 @@ class FetchApi implements INetworkInterface<Response> {
         if (!response.ok) {
           if (response.status === 401) {
             return Promise.reject(
-              new Error("Unauthorized access - please log in again.")
+              new Error('Unauthorized access - please log in again.')
             )
           }
           throw new Error(`HTTP error! status: ${response.status}`)
@@ -37,11 +41,11 @@ class FetchApi implements INetworkInterface<Response> {
   async get(url: string, body: BodyInit | null): Promise<Response> {
     try {
       return fetch(url, {
-        method: "GET",
+        method: 'GET',
         headers: {
-          accept: "*/*",
-          "Accept-Language": "en-US,en;q=0.9",
-          "Content-Type": "application/x-www-form-urlencoded",
+          accept: '*/*',
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Content-Type': 'application/x-www-form-urlencoded',
           cookie: ApiConfig.getCookies(),
         },
         body,
@@ -49,7 +53,7 @@ class FetchApi implements INetworkInterface<Response> {
         if (!response.ok) {
           if (response.status === 401) {
             return Promise.reject(
-              new Error("Unauthorized access - please log in again.")
+              new Error('Unauthorized access - please log in again.')
             )
           }
           throw new Error(`HTTP error! status: ${response.status}`)
