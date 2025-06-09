@@ -19,7 +19,8 @@
     "start": "node --no-warnings=ExperimentalWarning src/index.ts"
   },
   "dependencies": {
-    "cheerio": "^1.0.0"
+    "cheerio": "^1.0.0",
+     "puppeteer": "24.10.0"
   },
   "devDependencies": {
     "@types/node": "^22.15.29"
