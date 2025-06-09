@@ -1,10 +1,13 @@
+import type { ISavedCookie } from '../api_utils/cookies/types.ts/save_cookie'
+import FileUtils from '../file_utils/file_utils.ts'
+
 class ApiConfig {
     /**
         Endpoints uses format: httpRequestMethod + urlAction
     */
   private constructor() {}
 
-  private static apiCookies: string = ''
+  private static apiCookies: ISavedCookie | null = null
   private static cookieExpires: Date | null = null
 
   static BASE_URL = "https://challenge.sunvoy.com"
@@ -16,20 +19,27 @@ class ApiConfig {
   static getTokens: string = `${this.BASE_URL}/settings/tokens`
   static getUsersList: string = `${this.BASE_URL}/api/users`
 
-  static setCookies(cookies: string): void {
-    this.apiCookies = cookies
+  static async setCookies(): Promise<void> {
+    const cookies = await FileUtils.fetchCookies()
+    if (cookies) {
+      this.apiCookies = cookies
+      this.cookieExpires = new Date(cookies.expires)
+    }
   }
 
   static getCookies(): string {
-    return this.apiCookies
+    if (!this.apiCookies) {
+      return ''
+    }
+    console.log('GETTING COOKIES FROM API CONFIG', this.apiCookies.cookie)
+    return this.apiCookies!.cookie
   }
 
-  static setCookieExpires(date: Date): void {
-    this.cookieExpires = date;
-  }
-
-  static getCookieExpires(): Date {
-    return this.cookieExpires!;
+  static getCookieExpires(): Date | null {
+    if (!this.cookieExpires) {
+      return null
+    }
+    return this.cookieExpires;
   }
 }
 

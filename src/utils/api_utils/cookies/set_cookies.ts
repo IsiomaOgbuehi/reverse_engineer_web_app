@@ -1,5 +1,6 @@
 import puppeteer from "puppeteer"
 import ApiConfig from "../../network/api_config.ts"
+import FileUtils from '../../file_utils/file_utils.ts'
 
 const setCookies = async (): Promise<string | null> => {
   try {
@@ -20,7 +21,7 @@ const setCookies = async (): Promise<string | null> => {
       page.waitForNavigation({waitUntil: "networkidle2"})
     ])
 
-    const cookies = await page.browser().cookies() // cookies()
+    const cookies = await page.browser().cookies()
 
     const cookieString = cookies
       .map((cookie) => `${cookie.name}=${cookie.value}`)
@@ -28,8 +29,11 @@ const setCookies = async (): Promise<string | null> => {
     const cookieSession = cookies.find((cookie) => cookie.name === "JSESSIONID")
 
     if (cookieSession) {
-      ApiConfig.setCookies(cookieString)
-      ApiConfig.setCookieExpires(new Date(cookieSession.expires * 1000))
+      await FileUtils.saveCookies({
+        cookie: cookieString,
+        expires: cookieSession.expires * 1000,
+      })
+      ApiConfig.setCookies()
     } else {
       throw new Error("JSESSIONID cookie not found")
     }

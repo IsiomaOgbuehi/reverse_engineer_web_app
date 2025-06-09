@@ -6,10 +6,6 @@ class FetchApi implements INetworkInterface<Response> {
 
   async post(url: string, body: BodyInit | null, parsedHeaders?: HeadersInit): Promise<Response> {
     try {
-      console.log("FetchApi.post", url, body?.toString())
-      console.log('Passed headers:', parsedHeaders)
-
-      
       return fetch(url, {
         method: "POST",
         headers:
