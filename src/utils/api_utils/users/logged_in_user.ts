@@ -2,8 +2,9 @@ import ApiConfig from '../../network/api_config.ts'
 import NetworkProvider from '../../network/network_providers/provider/provider.ts'
 import type { ITokenPayload } from "../token/types.ts"
 import getCheckCode from './helper_functions.ts/check_code.ts'
+import type { IUser } from './types.ts'
 
-const getLoggedInUser = async (tokens: ITokenPayload): Promise<any> => {
+const getLoggedInUser = async (tokens: ITokenPayload): Promise<IUser> => {
   return new Promise<any>(async (resolve, reject) => {
     try {
       tokens.timestamp = Math.floor(Date.now() / 1e3).toString()
@@ -13,15 +14,14 @@ const getLoggedInUser = async (tokens: ITokenPayload): Promise<any> => {
 
       Object.keys(tokens)
         .sort()
-        .map((key) => urlParams.append(key, encodeURIComponent(tokens[key])))
+        .map((key) => urlParams.append(key, tokens[key]))
         .join("&")
 
-      urlParams.append("checkcode", encodeURIComponent(checkcode))
-      console.log("URL Params:", urlParams.toString())
+      urlParams.append("checkcode", checkcode)
 
       const response = await NetworkProvider.instance.post(
         ApiConfig.postLoginUser,
-        urlParams
+        urlParams,
       )
 
       if (!response.ok) {

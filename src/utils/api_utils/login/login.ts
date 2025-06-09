@@ -25,13 +25,22 @@ const loginUser = async (): Promise<ITokenPayload> => {
       if (request.ok) {
         console.log("Login successful")
         const token = await getToken()
-        console.log("Token:", token)
+        
         const allUsers = await getAllUsers()
-        console.log("All users fetched:", allUsers)
-        FileUtils.createUserList(allUsers)
-        // if(res) {
-        // getLoggedInUser(token)
-        // }
+        
+        // Save the user list to a file
+        const isFileSaved = await FileUtils.createUserList(allUsers)
+
+        if (isFileSaved) {
+          const loginUser = await getLoggedInUser(token)
+          if (loginUser) {
+            // Update user list on file
+            const isUserUpdated = await FileUtils.updateUserList(loginUser)
+            if (isUserUpdated) {
+              console.log("User list updated successfully.")
+            }
+          }
+        }
         resolve(token)
       }
     } catch (err) {

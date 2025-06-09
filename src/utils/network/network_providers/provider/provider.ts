@@ -20,12 +20,20 @@ class NetworkProvider implements INetworkInterface<Response> {
     }
     return this._instance
   }
-  public post(url: string, body: BodyInit | null): Promise<Response> {
-    return this.networkInterface.post(url, body)
+  public post(
+    url: string,
+    body: BodyInit | null,
+    parsedHeaders?: HeadersInit
+  ): Promise<Response> {
+    return this.networkInterface.post(url, body, parsedHeaders)
   }
 
-  public get(url: string, body: BodyInit | null): Promise<Response> {
-    return this.networkInterface.get(url, body)
+  public get(
+    url: string,
+    body: BodyInit | null,
+    parsedHeaders?: HeadersInit
+  ): Promise<Response> {
+    return this.networkInterface.get(url, body, parsedHeaders)
   }
 }
 
